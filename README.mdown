@@ -1,0 +1,39 @@
+# A simple event loop for Python
+
+A [Hacker School](http://www.hackerschool.com/) project
+
+## It’s like multithreading but everything happens on the same thread
+
+Most of the time I want to do things asynchronously, it’s because I want my program to stay useful for other things while it waits for something external — like a network request or a timer — not because I need it do do two things at once.
+
+I think event loops are useful in these kinds of situations — they’re easy (if limited) concurrency.
+
+Python has a [`Queue`](http://docs.python.org/library/queue.html) ([3k](http://docs.python.org/py3k/library/queue.html)) class that makes it easy to make things happen on one thread from other threads, which gets us 90% of the way there. Here’s the other 10%:
+
+    >>> from runloop import RunLoop
+    >>> from threading import Timer
+    >>> from datetime import datetime
+    >>> def time():
+    ...     print(datetime.now())
+    ... 
+    >>> def sayHello():
+    ...     print("Hello, World!")
+    ... 
+    >>> rl = RunLoop()
+    >>> Timer(3, rl.onLoop(sayHello)).start()
+    >>> rl.every(time, 1)
+    >>> Timer(5, rl.stop).start()
+    >>> rl.run()
+    2012-02-27 14:01:25.671389
+    2012-02-27 14:01:26.672585
+    Hello, World!
+    2012-02-27 14:01:27.673757
+    2012-02-27 14:01:28.674994
+    2012-02-27 14:01:29.676173
+    >>> 
+
+## How’s it doing?
+
+It’s pretty young. I made it to help me play around with [tweddit](https://github.com/Sidnicious/tweddit). Things that you’ve scheduled to repeat with `every` will keep piling up on the queue even after you call `stop()`.
+
+If you think it’s useful, let me know how to improve it.

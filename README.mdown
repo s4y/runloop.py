@@ -6,7 +6,7 @@ A [Hacker School](http://www.hackerschool.com/) project
 
 Most of the time I want to do things asynchronously, it’s because I want my program to stay useful for other things while it waits for something external — like a network request or a timer — not because I need it do do two things at once.
 
-I think event loops are useful in these kinds of situations — they’re easy (if limited) concurrency.
+I think event loops are useful in these kinds of situations, if you don’t want to deal with thread safety.
 
 Python has a [`Queue`](http://docs.python.org/library/queue.html) ([3k](http://docs.python.org/py3k/library/queue.html)) class that makes it easy to make things happen on one thread from other threads, which gets us 90% of the way there. Here’s the other 10%:
 

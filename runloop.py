@@ -29,6 +29,9 @@ class RunLoop:
 			inv.fn(*inv.args, **inv.kwargs)
 	def stop(self):
 		self.running = False
+		def nop(): # no operation (like assembler instruction) does nothing
+			pass
+		self.add(nop) # to make queue.get() call in run method quit and let while-loop stop
 	def onLoop(self, fn):
 		from functools import wraps
 		@wraps(fn)
